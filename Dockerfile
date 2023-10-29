@@ -22,6 +22,8 @@ COPY frontend /home/app/frontend
 COPY src /home/app/src
 COPY lombok.config /home/app
 COPY pom.xml /home/app
+COPY CHECKS /home/app
+
 
 ENV PRODUCTION=true
 RUN mvn -B -DskipTests -Pproduction -f /home/app/pom.xml clean package
