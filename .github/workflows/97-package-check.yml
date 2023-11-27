@@ -26,7 +26,15 @@ jobs:
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             echo "$file was changed"
           done
+      - name: package.json updated
+        if: (contains(steps.changed-files.outputs.changed_files, 'frontend/package.json')
+        run: |
+          echo "package.json udpated"
+      - name: package-lock.json updated
+        if: (contains(steps.changed-files.outputs.changed_files, 'frontend/package-lock.json')
+        run: |
+          echo "package.json udpated"
       - name: Fail if only one
-        if: (((contains(steps.verify-changed-files.outputs.changed_files, 'frontend/package.json'))&&(!contains(steps.verify-changed-files.outputs.changed_files, 'frontend/package-lock.json')))|| ((!contains(steps.verify-changed-files.outputs.changed_files, 'frontend/package.json'))&&(contains(steps.verify-changed-files.outputs.changed_files, 'frontend/package-lock.json'))))
+        if: (((contains(steps.changed-files.outputs.changed_files, 'frontend/package.json'))&&(!contains(steps.changed-files.outputs.changed_files, 'frontend/package-lock.json')))|| ((!contains(steps.changed-files.outputs.changed_files, 'frontend/package.json'))&&(contains(steps.changed-files.outputs.changed_files, 'frontend/package-lock.json'))))
         run: |
           exit 1
