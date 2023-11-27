@@ -1,0 +1,38 @@
+name: 100 - Check that package-lock.json was changed only if package.json was changed
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+      - $default-branch
+  push:
+    branches:
+      - main
+      - $default-branch
+
+jobs:
+  get_changed_files:
+    runs-on: ubuntu-latest
+    name: Test changed-files
+    steps:
+      - uses: actions/checkout@v2
+      - name: changed-files-package
+        uses: tj-actions/verify-changed-files@v16
+        id: verify-changed-files-package
+        with:
+          files: |
+            package.json
+      - name: changed-files-package-lock
+        uses: tj-actions/verify-changed-files@v16
+        id: verify-changed-files-package-lock
+        with:
+          files: |
+            package-lock.json
+      - name: Fail if only one
+        if: ((steps.verify-changed-files-package.outputs.test_any_changed == 'true') ^ (steps.verify-changed-files-package-lock.outputs.test_any_changed == 'true'))
+        run: |
+          exit 1
+
+        
+        
