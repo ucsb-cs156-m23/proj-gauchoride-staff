@@ -26,32 +26,8 @@ jobs:
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             echo "$file was changed"
           done
-      - name: changed-files-package
-        uses: tj-actions/verify-changed-files@v16
-        id: verify-changed-files-package
-        with:
-          files: |
-            frontend/package.json
-      - name: changed-files-package-lock
-        uses: tj-actions/verify-changed-files@v16
-        id: verify-changed-files-package-lock
-        with:
-          files: |
-            frontend/package-lock.json
-      - name: package-changed?
-        run: |
-          echo "package changed?"
-          for file in ${{ steps.verify-changed-files-package.outputs.all_changed_files }}; do
-            echo "$file was changed"
-          done
-      - name: package-lock-changed?
-        run: |
-          echo "package-lock changed?"
-          for file in ${{ steps.verify-changed-files-package-lock.outputs.all_changed_files }}; do
-            echo "$file was changed"
-          done
       - name: Fail if only one
-        if: ((steps.verify-changed-files-package.outputs.test_any_changed == 'true') && (steps.verify-changed-files-package-lock.outputs.test_any_changed == 'false') || (steps.verify-changed-files-package.outputs.test_any_changed == 'false') && (steps.verify-changed-files-package-lock.outputs.test_any_changed == 'true'))
+        if: (((contains(steps.verify-changed-files.outputs.changed_files, 'package.json'))&&(!contains(steps.verify-changed-files.outputs.changed_files, 'package-lock.json')))|| ((!contains(steps.verify-changed-files.outputs.changed_files, 'package.json'))&&(contains(steps.verify-changed-files.outputs.changed_files, 'package-lock.json'))))
         run: |
           exit 1
 
