@@ -29,6 +29,16 @@ jobs:
         with:
           files: |
             frontend/package-lock.json
+      - name: package-changed?
+        run: |
+          for file in ${{ steps.verify-changed-files-package.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
+      - name: package-lock-changed?
+        run: |
+          for file in ${{ steps.verify-changed-files-package-lock.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
       - name: Fail if only one
         if: ((steps.verify-changed-files-package.outputs.test_any_changed == 'true') && (steps.verify-changed-files-package-lock.outputs.test_any_changed == 'false') || (steps.verify-changed-files-package.outputs.test_any_changed == 'false') && (steps.verify-changed-files-package-lock.outputs.test_any_changed == 'true'))
         run: |
