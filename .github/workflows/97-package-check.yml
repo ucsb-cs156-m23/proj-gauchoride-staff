@@ -27,14 +27,14 @@ jobs:
             echo "$file was changed"
           done
       - name: package.json updated
-        if: (contains(steps.changed-files.outputs.changed_files, 'frontend/package.json'))
+        if: (contains(steps.changed-files.outputs.changed_files, 'package.json'))
         run: |
           echo "package.json udpated"
       - name: package-lock.json updated
-        if: (contains(steps.changed-files.outputs.changed_files, 'frontend/package-lock.json'))
+        if: (contains(steps.changed-files.outputs.changed_files, 'package-lock.json'))
         run: |
           echo "package.json udpated"
       - name: Fail if only one
-        if: (((contains(steps.changed-files.outputs.changed_files, 'frontend/package.json'))&&(!contains(steps.changed-files.outputs.changed_files, 'frontend/package-lock.json')))|| ((!contains(steps.changed-files.outputs.changed_files, 'frontend/package.json'))&&(contains(steps.changed-files.outputs.changed_files, 'frontend/package-lock.json'))))
+        if: (((contains(steps.changed-files.outputs.changed_files, 'package.json'))&&(!contains(steps.changed-files.outputs.changed_files, 'package-lock.json')))|| ((!contains(steps.changed-files.outputs.changed_files, 'package.json'))&&(contains(steps.changed-files.outputs.changed_files, 'package-lock.json'))))
         run: |
           exit 1
