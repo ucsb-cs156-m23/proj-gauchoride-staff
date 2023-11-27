@@ -30,7 +30,7 @@ jobs:
           files: |
             package-lock.json
       - name: Fail if only one
-        if: ((steps.verify-changed-files-package.outputs.test_any_changed == 'true') ^ (steps.verify-changed-files-package-lock.outputs.test_any_changed == 'true'))
+        if: ((steps.verify-changed-files-package.outputs.test_any_changed == 'true') && (steps.verify-changed-files-package-lock.outputs.test_any_changed == 'false') || (steps.verify-changed-files-package.outputs.test_any_changed == 'false') && (steps.verify-changed-files-package-lock.outputs.test_any_changed == 'true'))
         run: |
           exit 1
 
